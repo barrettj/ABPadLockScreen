@@ -90,7 +90,7 @@
     [self.view setBackgroundColor:[UIColor clearColor]];
     
     //Set the background view
-    UIImageView *backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background"]] autorelease];
+    UIImageView *backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ABPADLOCK-background"]] autorelease];
     [self.view addSubview:backgroundView];
     
     //Set the title
@@ -106,7 +106,7 @@
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [cancelButton setBackgroundColor:[UIColor clearColor]];
     [cancelButton setFrame:CGRectMake(self.view.frame.size.width - 60.0f, 7.0f, 50.0f, 29.0f)];
-    [cancelButton setBackgroundImage:[UIImage imageNamed:@"close"] forState:UIControlStateNormal];
+    [cancelButton setBackgroundImage:[UIImage imageNamed:@"ABPADLOCK-close"] forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:cancelButton];
     
@@ -228,8 +228,8 @@
     [self.view addSubview:nineButton];
     
     UIButton *blankButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [blankButton setBackgroundImage:[UIImage imageNamed:@"blank"] forState:UIControlStateNormal];
-    [blankButton setBackgroundImage:[UIImage imageNamed:@"blank"] forState:UIControlStateHighlighted];
+    [blankButton setBackgroundImage:[UIImage imageNamed:@"ABPADLOCK-blank"] forState:UIControlStateNormal];
+    [blankButton setBackgroundImage:[UIImage imageNamed:@"ABPADLOCK-blank"] forState:UIControlStateHighlighted];
     [blankButton setFrame:CGRectMake(sevenButton.frame.origin.x, 
                                      sevenButton.frame.origin.y + sevenButton.frame.size.height - 1, 
                                      leftButtonWidth, 
@@ -244,8 +244,8 @@
     [self.view addSubview:zeroButton];
     
     UIButton *clearButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [clearButton setBackgroundImage:[UIImage imageNamed:@"clear"] forState:UIControlStateNormal];
-    [clearButton setBackgroundImage:[UIImage imageNamed:@"clear-selected"] forState:UIControlStateHighlighted];
+    [clearButton setBackgroundImage:[UIImage imageNamed:@"ABPADLOCK-clear"] forState:UIControlStateNormal];
+    [clearButton setBackgroundImage:[UIImage imageNamed:@"ABPADLOCK-clear-selected"] forState:UIControlStateHighlighted];
     [clearButton addTarget:self action:@selector(backSpaceButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [clearButton setFrame:CGRectMake(threeButton.frame.origin.x, 
                                      zeroButton.frame.origin.y, 
@@ -347,25 +347,25 @@
     {
         case 0:
             digitsPressed = 1;
-            [keyValueOneImageView setImage:[UIImage imageNamed:@"input"]];
+            [keyValueOneImageView setImage:[UIImage imageNamed:@"ABPADLOCK-input"]];
             [self setDigitOne:[NSString stringWithFormat:@"%i", digit]];
             break;
             
         case 1:
             digitsPressed = 2;
-            [keyValueTwoImageView setImage:[UIImage imageNamed:@"input"]];
+            [keyValueTwoImageView setImage:[UIImage imageNamed:@"ABPADLOCK-input"]];
             [self setDigitTwo:[NSString stringWithFormat:@"%i", digit]];
             break;
             
         case 2:
             digitsPressed = 3;
-            [keyValueThreeImageView setImage:[UIImage imageNamed:@"input"]];
+            [keyValueThreeImageView setImage:[UIImage imageNamed:@"ABPADLOCK-input"]];
             [self setDigitThree:[NSString stringWithFormat:@"%i", digit]];
             break;
             
         case 3:
             digitsPressed = 4;
-            [keyValueFourImageView setImage:[UIImage imageNamed:@"input"]];
+            [keyValueFourImageView setImage:[UIImage imageNamed:@"ABPADLOCK-input"]];
             [self setDigitFour:[NSString stringWithFormat:@"%i", digit]];
             [self performSelector:@selector(checkPin) withObject:self afterDelay:0.3];
             
@@ -396,13 +396,13 @@
             int remainingAttempts = [dataSource attemptLimit] - attempts;
             if (remainingAttempts != 0) 
             {
-                [incorrectAttemptImageView setImage:[UIImage imageNamed:@"error-box"]];
-                [incorrectAttemptLabel setText:[NSString stringWithFormat:@"Incorrect pin. %i attempts left", [dataSource attemptLimit] - attempts]];
+                [incorrectAttemptImageView setImage:[UIImage imageNamed:@"ABPADLOCK-error-box"]];
+                [incorrectAttemptLabel setText:[NSString stringWithFormat:@"Incorrect pin. %i attempts left", [self attemptLimit] - attempts]];
             }
             else
             {
-                [incorrectAttemptImageView setImage:[UIImage imageNamed:@"error-box"]];
-                [incorrectAttemptLabel setText:[NSString stringWithFormat:@"No remaining attempts", [dataSource attemptLimit] - attempts]];
+                [incorrectAttemptImageView setImage:[UIImage imageNamed:@"ABPADLOCK-error-box"]];
+                [incorrectAttemptLabel setText:[NSString stringWithFormat:@"No remaining attempts", [self attemptLimit] - attempts]];
                 [self lockPad];
                 [delegate attemptsExpired];
                 return;
@@ -410,7 +410,7 @@
         }
         else
         {
-            [incorrectAttemptImageView setImage:[UIImage imageNamed:@"error-box"]];
+            [incorrectAttemptImageView setImage:[UIImage imageNamed:@"ABPADLOCK-error-box"]];
             [incorrectAttemptLabel setText:[NSString stringWithFormat:@"Incorrect pin"]];
         }
         [self resetLockScreen];
@@ -431,8 +431,8 @@
 - (UIButton *)getStyledButtonForNumber:(int)number
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    NSString *imageName = [NSString stringWithFormat:@"%i", number];
-    NSString *altImageName = [NSString stringWithFormat:@"%@-selected", imageName];
+    NSString *imageName = [NSString stringWithFormat:@"ABPADLOCK-%i", number];
+    NSString *altImageName = [NSString stringWithFormat:@"ABPADLOCK-%@-selected", imageName];
     [button setBackgroundImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
     [button setBackgroundImage:[UIImage imageNamed:altImageName] forState:UIControlStateHighlighted];
     [button setTag:number];
