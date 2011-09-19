@@ -7,6 +7,7 @@
 //
 
 #import "YourViewController.h"
+#import "ABPadLockScreen.h"
 
 @interface YourViewController()
 
@@ -73,13 +74,17 @@
 -(void)showLockScreen:(id)sender
 {
     //Create the ABLockScreen (Alloc init) and display how you wish. An easy way is by using it as a modal view as per below:
-    ABPadLockScreen *lockScreen = [[ABPadLockScreen alloc] initWithDelegate:self withDataSource:self];
+    ABPadLockScreen *lockScreen = [[ABPadLockScreen alloc] init];
     float centerLeft = self.view.frame.size.width/2.0f - lockScreen.view.frame.size.width/2.0f;
     float centerTop =  self.view.frame.size.height/2.0f - lockScreen.view.frame.size.height/2.0f;
     [lockScreen setModalPresentationStyle:UIModalPresentationFormSheet];
     [lockScreen setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
     [self presentModalViewController:lockScreen animated:YES];
     lockScreen.view.superview.frame = CGRectMake(centerLeft, centerTop, 332.0f, 465.0f);
+    
+    
+    
+    
     [lockScreen release];
 }
 
@@ -113,37 +118,6 @@
     
 }
 
-#pragma mark - ABPadLockScreen DataSource methods
-- (int)unlockPasscode
-{
-    //Provide the ABLockScreen with a code to verify against
-    return 1234;
-}
-
-- (NSString *)padLockScreenTitleText
-{
-    //Provide the text for the lock screen title here
-    return @"Enter passcode";
-    
-}
-
-- (NSString *)padLockScreenSubtitleText
-{
-    //Provide the text for the lock screen subtitle here
-    return @"Please enter passcode";
-}
-
--(BOOL)hasAttemptLimit
-{
-    //If the lock screen only allows a limited number of attempts, return YES. Otherwise, return NO
-    return YES;
-}
-
-- (int)attemptLimit
-{
-    //If the lock screen only allows a limited number of attempts, return the number of allowed attempts here You must return higher than 0 (Recomended more than 1).
-    return 3;
-}
 
 
 @end

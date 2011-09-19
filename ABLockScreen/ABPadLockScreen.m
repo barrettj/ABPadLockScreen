@@ -56,19 +56,30 @@
 @end
 
 @implementation ABPadLockScreen
-@synthesize delegate, dataSource;
 @synthesize keyValueOneImageView, keyValueTwoImageView, keyValueThreeImageView, keyValueFourImageView, incorrectAttemptImageView;
 @synthesize incorrectAttemptLabel, subTitleLabel;
 @synthesize digitOne, digitTwo, digitThree, digitFour;
 @synthesize digitsPressed, attempts;
 
-- (id)initWithDelegate:(id<ABPadLockScreenDelegate>)aDelegate withDataSource:(id<ABPadLockScreenDataSource>)aDataSource
-{
+@synthesize onSuccessfulUnlock;
+@synthesize onAttemptsExpired;
+@synthesize onUnlockCancelled;
+@synthesize onUnsuccessfulAttempt;
+
+@synthesize unlockPasscode;
+@synthesize padLockScreenTitleText;
+@synthesize padLockScreenSubtitleText;
+@synthesize hasAttemptLimit;
+@synthesize attemptLimit;
+
+- (id)init {
     self = [super init];
-    if (self) 
-    {
-        [self setDelegate:aDelegate];
-        [self setDataSource:aDataSource];
+    if (self) {
+        self.unlockPasscode = 1234;
+        self.hasAttemptLimit = NO;
+        self.padLockScreenTitleText = @"Enter Passcode";
+        self.padLockScreenSubtitleText = @"Please enter passcode";
+        attemptLimit = 3;
     }
     return self;
 }
@@ -99,7 +110,7 @@
     [titleLabel setBackgroundColor:[UIColor clearColor]];
     [titleLabel setTextColor:[UIColor whiteColor]];
     [titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:18.0f]];
-    [titleLabel setText:[dataSource padLockScreenTitleText]];
+    [titleLabel setText:[self padLockScreenTitleText]];
     [self.view addSubview:titleLabel];
     
     //Set the cancel button
@@ -116,7 +127,7 @@
     [_subtitleLabel setBackgroundColor:[UIColor clearColor]];
     [_subtitleLabel setTextColor:[UIColor blackColor]];
     [_subtitleLabel setFont:[UIFont fontWithName:@"Helvetica" size:14.0f]];
-    [_subtitleLabel setText:[dataSource padLockScreenSubtitleText]];
+    [_subtitleLabel setText:[self padLockScreenSubtitleText]];
     [self setSubTitleLabel:_subtitleLabel];
     [self.view addSubview:subTitleLabel];
     
@@ -296,7 +307,8 @@
 #pragma mark - button methods
 - (void)cancelButtonTapped:(id)sender
 {
-    [delegate unlockWasCancelled];
+    if (self.onUnlockCancelled)
+        self.onUnlockCancelled(self);
     [self resetLockScreen];
     [incorrectAttemptImageView setImage:nil];
     [incorrectAttemptLabel setText:nil];
@@ -379,9 +391,11 @@
 - (void)checkPin
 {
     int stringPasscode = [[NSString stringWithFormat:@"%@%@%@%@", digitOne, digitTwo, digitThree, digitFour] intValue];
-    if (stringPasscode == [dataSource unlockPasscode]) 
+    if (stringPasscode == [self unlockPasscode]) 
     {
-        [delegate unlockWasSuccessful];
+        if (self.onSuccessfulUnlock)
+            self.onSuccessfulUnlock(self);
+            
         [self resetLockScreen];
         [incorrectAttemptImageView setImage:nil];
         [incorrectAttemptLabel setText:nil];
@@ -389,11 +403,14 @@
     else
     {
         attempts += 1;
-        [delegate unlockWasUnsuccessful:stringPasscode afterAttemptNumber:attempts];
-        if ([dataSource hasAttemptLimit]) 
+        
+        if (self.onUnsuccessfulAttempt)
+            self.onUnsuccessfulAttempt(self, stringPasscode, attempts);
+        
+        if ([self hasAttemptLimit]) 
         {
             
-            int remainingAttempts = [dataSource attemptLimit] - attempts;
+            int remainingAttempts = [self attemptLimit] - attempts;
             if (remainingAttempts != 0) 
             {
                 [incorrectAttemptImageView setImage:[UIImage imageNamed:@"ABPADLOCK-error-box"]];
@@ -404,7 +421,10 @@
                 [incorrectAttemptImageView setImage:[UIImage imageNamed:@"ABPADLOCK-error-box"]];
                 [incorrectAttemptLabel setText:[NSString stringWithFormat:@"No remaining attempts", [self attemptLimit] - attempts]];
                 [self lockPad];
-                [delegate attemptsExpired];
+                
+                if (self.onAttemptsExpired)
+                    self.onAttemptsExpired(self);
+                
                 return;
             }
         }

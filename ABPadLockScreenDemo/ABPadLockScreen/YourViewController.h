@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ABPadLockScreen.h"
 
-@interface YourViewController : UIViewController <ABPadLockScreenDelegate, ABPadLockScreenDataSource>
+
+@interface YourViewController : UIViewController
 
 @end

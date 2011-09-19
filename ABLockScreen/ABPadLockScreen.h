@@ -29,6 +29,13 @@
 //
 
 #import <UIKit/UIKit.h>
+
+@class ABPadLockScreen;
+
+typedef void (^ABPadLockScreenEventBlock)(ABPadLockScreen*);
+typedef void (^ABPadLockScreenUnsuccessfulEventBlock)(ABPadLockScreen*, int, int);
+
+
 @protocol ABPadLockScreenDelegate
 @required
 - (void)unlockWasSuccessful;
@@ -39,23 +46,21 @@
 - (void)attemptsExpired;
 @end
 
-@protocol ABPadLockScreenDataSource
-@required
-- (int)unlockPasscode;
-- (NSString *)padLockScreenTitleText;
-- (NSString *)padLockScreenSubtitleText;
-- (BOOL)hasAttemptLimit;
-
-@optional
-- (int)attemptLimit;
-
-@end
-
 @interface ABPadLockScreen : UIViewController
-@property (nonatomic, assign) id<ABPadLockScreenDelegate> delegate;
-@property (nonatomic, assign) id<ABPadLockScreenDataSource> dataSource;
 
-- (id)initWithDelegate:(id<ABPadLockScreenDelegate>)aDelegate withDataSource:(id<ABPadLockScreenDataSource>)aDataSource;
+@property (readwrite, copy) ABPadLockScreenEventBlock onSuccessfulUnlock;
+@property (readwrite, copy) ABPadLockScreenEventBlock onAttemptsExpired;
+@property (readwrite, copy) ABPadLockScreenEventBlock onUnlockCancelled;
+@property (readwrite, copy) ABPadLockScreenUnsuccessfulEventBlock onUnsuccessfulAttempt;
+
+
+@property (nonatomic, assign) int unlockPasscode;
+@property (nonatomic, copy) NSString* padLockScreenTitleText;
+@property (nonatomic, copy) NSString* padLockScreenSubtitleText;
+@property (nonatomic, assign) BOOL hasAttemptLimit;
+@property (nonatomic, assign) int attemptLimit;
+
+- (id)init;
 - (void)resetAttempts;
 - (void)resetLockScreen;
 
