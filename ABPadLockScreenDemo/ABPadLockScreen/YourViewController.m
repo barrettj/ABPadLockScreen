@@ -82,42 +82,23 @@
     [self presentModalViewController:lockScreen animated:YES];
     lockScreen.view.superview.frame = CGRectMake(centerLeft, centerTop, 332.0f, 465.0f);
     
+    lockScreen.onSuccessfulUnlock = ^(ABPadLockScreen* lock) {
+        [self dismissModalViewControllerAnimated:YES];
+    };
     
+    lockScreen.onUnlockCancelled = ^(ABPadLockScreen* lock) {
+        [self dismissModalViewControllerAnimated:YES];
+    };
     
+    lockScreen.onAttemptsExpired = ^(ABPadLockScreen* lock) {
+        [self dismissModalViewControllerAnimated:YES];
+    };
+
+    lockScreen.onUnsuccessfulAttempt = ^(ABPadLockScreen* lock, int tried, int attempts) {
+        
+    };
     
     [lockScreen release];
 }
-
-#pragma mark - ABPadLockScreen Delegate methods
-- (void)unlockWasSuccessful
-{
-    //Perform any action needed when the unlock was successfull (usually remove the lock view and then load another view)
-    [self dismissModalViewControllerAnimated:YES];
-    
-}
-
-- (void)unlockWasUnsuccessful:(int)falseEntryCode afterAttemptNumber:(int)attemptNumber
-{
-    //Tells you that the user performed an unsuccessfull unlock and tells you the incorrect code and the attempt number. ABLockScreen will display an error if you have
-    //set an attempt limit through the datasource method, but you may wish to make a record of the failed attempt.
-
-    
-}
-
-- (void)unlockWasCancelled
-{
-    //This is a good place to remove the ABLockScreen
-    [self dismissModalViewControllerAnimated:YES];
-    
-}
-
--(void)attemptsExpired
-{
-    //If you want to perform any action when the user has failed all their attempts, do so here. ABLockPad will automatically lock them from entering in any more
-    //pins.
-    
-}
-
-
 
 @end
