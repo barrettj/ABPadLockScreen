@@ -36,16 +36,6 @@ typedef void (^ABPadLockScreenEventBlock)(ABPadLockScreen*);
 typedef void (^ABPadLockScreenUnsuccessfulEventBlock)(ABPadLockScreen*, int, int);
 
 
-@protocol ABPadLockScreenDelegate
-@required
-- (void)unlockWasSuccessful;
-- (void)unlockWasUnsuccessful:(int)falseEntryCode afterAttemptNumber:(int)attemptNumber;
-- (void)unlockWasCancelled;
-
-@optional
-- (void)attemptsExpired;
-@end
-
 @interface ABPadLockScreen : UIViewController
 
 @property (readwrite, copy) ABPadLockScreenEventBlock onSuccessfulUnlock;

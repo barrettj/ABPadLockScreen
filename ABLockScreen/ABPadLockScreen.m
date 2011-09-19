@@ -79,7 +79,11 @@
         self.hasAttemptLimit = NO;
         self.padLockScreenTitleText = @"Enter Passcode";
         self.padLockScreenSubtitleText = @"Please enter passcode";
-        attemptLimit = 3;
+        self.attemptLimit = 3;
+        
+        // setup useful defaults:
+        [self setModalPresentationStyle:UIModalPresentationFormSheet];
+        [self setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
     }
     return self;
 }

@@ -77,10 +77,6 @@
     ABPadLockScreen *lockScreen = [[ABPadLockScreen alloc] init];
     float centerLeft = self.view.frame.size.width/2.0f - lockScreen.view.frame.size.width/2.0f;
     float centerTop =  self.view.frame.size.height/2.0f - lockScreen.view.frame.size.height/2.0f;
-    [lockScreen setModalPresentationStyle:UIModalPresentationFormSheet];
-    [lockScreen setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [self presentModalViewController:lockScreen animated:YES];
-    lockScreen.view.superview.frame = CGRectMake(centerLeft, centerTop, 332.0f, 465.0f);
     
     lockScreen.onSuccessfulUnlock = ^(ABPadLockScreen* lock) {
         [self dismissModalViewControllerAnimated:YES];
@@ -97,6 +93,10 @@
     lockScreen.onUnsuccessfulAttempt = ^(ABPadLockScreen* lock, int tried, int attempts) {
         
     };
+    
+    [self presentModalViewController:lockScreen animated:YES];
+    lockScreen.view.superview.frame = CGRectMake(centerLeft, centerTop, 332.0f, 465.0f);
+
     
     [lockScreen release];
 }
