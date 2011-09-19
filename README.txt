@@ -12,3 +12,6 @@ To use in your app:
 
 To view a demo of the ABPadLockScreen in action, as well as an example of how to use the class, have a look through the 
 ABPadLockScreenDemo project.
+
+
+Modified Sept 2011 by Barrett Jacobsen to use Blocks and have Unique Images
