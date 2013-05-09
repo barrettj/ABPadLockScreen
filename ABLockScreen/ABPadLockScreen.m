@@ -423,7 +423,7 @@
             else
             {
                 [incorrectAttemptImageView setImage:[UIImage imageNamed:@"ABPADLOCK-error-box"]];
-                [incorrectAttemptLabel setText:[NSString stringWithFormat:@"No remaining attempts", [self attemptLimit] - attempts]];
+                [incorrectAttemptLabel setText:[NSString stringWithFormat:@"No remaining attempts"]];
                 [self lockPad];
                 
                 if (self.onAttemptsExpired)
